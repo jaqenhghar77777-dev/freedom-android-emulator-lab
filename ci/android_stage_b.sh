@@ -35,8 +35,21 @@ with tempfile.TemporaryDirectory(dir=home,prefix='freedom-b-') as td:
         try: f=os.open('link',os.O_RDONLY|os.O_NOFOLLOW,dir_fd=d)
         except OSError as e: require(e.errno in (errno.ELOOP,errno.EMLINK),'nofollow')
         else: os.close(f); raise RuntimeError('symlink_followed')
-        os.link('file','hard',src_dir_fd=d,dst_dir_fd=d)
-        require(os.stat('file',dir_fd=d).st_nlink==2,'hardlink_visible')
+        # Termux's CPython Android build lacks os.link, but Android 15 ships
+        # /system/bin/ln. This is a preflight-only fixture operation: it is
+        # NOT part of the trusted checker or a model-exposed command interface.
+        # Fail closed if the executable or filesystem cannot create the alias.
+        alias = subprocess.run(['/system/bin/ln', str(root/'file'), str(root/'hard')],
+                               cwd='/', env={'PATH':'/system/bin'},
+                               stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE, close_fds=True, timeout=5)
+        require(alias.returncode == 0, 'hardlink_creation_failed')
+        original_st = os.stat('hard', dir_fd=d, follow_symlinks=False)
+        current_st = os.stat('file', dir_fd=d, follow_symlinks=False)
+        require((original_st.st_dev, original_st.st_ino) ==
+                (current_st.st_dev, current_st.st_ino) and
+                original_st.st_nlink == 2 and current_st.st_nlink == 2,
+                'hardlink_visible')
         f=os.open('staged',os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600,dir_fd=d)
         os.write(f,b'after');os.fsync(f);os.close(f)
         os.replace('staged','file',src_dir_fd=d,dst_dir_fd=d);os.fsync(d)
