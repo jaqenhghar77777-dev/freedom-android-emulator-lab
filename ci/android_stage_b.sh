@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Stage B: disposable Android emulator + non-root Termux Python capabilities.
+# Zero model requests, zero credentials, zero autonomous editing.
+set -Eeuo pipefail
+[[ "$GITHUB_ACTIONS" == true ]] || exit 20
+[[ "$(adb shell getprop ro.product.cpu.abi | tr -d '\r')" == x86_64 ]] || exit 21
+fingerprint=$(adb shell getprop ro.build.fingerprint | tr -d '\r')
+[[ "$fingerprint" == *generic* || "$fingerprint" == *sdk_gphone* || "$fingerprint" == *emulator* ]] || exit 22
+[[ "$(adb shell run-as com.termux id -u | tr -d '\r')" != 0 ]] || exit 23
+p=/data/data/com.termux/files/usr
+h=/data/data/com.termux/files/home
+run="run-as com.termux $p/bin/env -i HOME=$h PREFIX=$p TMPDIR=$p/tmp PATH=$p/bin:/system/bin LANG=C.UTF-8"
+echo 'STAGE_B: one attempt to install native Python under non-root Termux'
+adb shell "$run $p/bin/bash -c 'apt-get update -qq && apt-get install -y python'"
+# Transfer a synthetic-only script directly into the private Termux directory.
+adb shell -T 'run-as com.termux /system/bin/sh -c "mkdir -p files/home/freedom-stage-b && cat > files/home/freedom-stage-b/probe.py"' <<'PY'
+import errno, itertools, json, os, pathlib, stat, subprocess, sys, tempfile
+home='/data/data/com.termux/files/home'
+prefix='/data/data/com.termux/files/usr'
+def require(x, name):
+    if not x: raise RuntimeError(name)
+require(os.getuid()!=0 and sys.executable.startswith(prefix+'/'), 'native_nonroot_python')
+require(sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode,'isolated_python')
+require(set(os.environ)<={'HOME','PREFIX','PATH','TMPDIR','LANG','LC_ALL','LC_CTYPE'}, 'clean_environment')
+with tempfile.TemporaryDirectory(dir=home,prefix='freedom-b-') as td:
+    root=pathlib.Path(td)
+    st=root.lstat()
+    require(st.st_uid==os.getuid() and stat.S_IMODE(st.st_mode)&0o077==0,'private_workspace')
+    d=os.open(root,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+    try:
+        fd=os.open('file',os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600,dir_fd=d)
+        os.write(fd,b'before'); os.fsync(fd)
+        original=(os.fstat(fd).st_dev,os.fstat(fd).st_ino); os.close(fd); os.fsync(d)
+        os.symlink('file','link',dir_fd=d)
+        try: f=os.open('link',os.O_RDONLY|os.O_NOFOLLOW,dir_fd=d)
+        except OSError as e: require(e.errno in (errno.ELOOP,errno.EMLINK),'nofollow')
+        else: os.close(f); raise RuntimeError('symlink_followed')
+        os.link('file','hard',src_dir_fd=d,dst_dir_fd=d)
+        require(os.stat('file',dir_fd=d).st_nlink==2,'hardlink_visible')
+        f=os.open('staged',os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600,dir_fd=d)
+        os.write(f,b'after');os.fsync(f);os.close(f)
+        os.replace('staged','file',src_dir_fd=d,dst_dir_fd=d);os.fsync(d)
+        f=os.open('file',os.O_RDONLY|os.O_NOFOLLOW,dir_fd=d)
+        require(os.read(f,30)==b'after' and (os.fstat(f).st_dev,os.fstat(f).st_ino)!=original,'atomic_commit')
+        os.close(f)
+        parent_fd=os.open('canary',os.O_CREAT|os.O_EXCL|os.O_WRONLY,0o600,dir_fd=d)
+        os.set_inheritable(parent_fd,True)
+        try:
+            child='''import errno,itertools,json,os,sys
+if set(os.environ)-{'LC_ALL','LC_CTYPE'}: sys.exit(2)
+if not (sys.flags.isolated and sys.flags.no_site): sys.exit(2)
+for n in os.listdir('/proc/self/fd'):
+ try:
+  if int(n)>2: os.fstat(int(n)); sys.exit(2)
+ except OSError as e:
+  if e.errno != errno.EBADF: raise
+raw=sys.stdin.buffer.read(100)
+if raw!=b'ready':sys.exit(2)
+records=({}, {'status':'ready'}, {'status':'blocked'}, {'status':None})
+passed=sum(1 for k in range(5) for xs in itertools.product(range(4),repeat=k) if sum(records[i].get('status')=='ready' for i in xs)==xs.count(1))
+print(json.dumps({'choice':'ready','checked':passed}))'''
+            def call(data):
+                return subprocess.run([sys.executable,'-I','-S','-B','-c',child],cwd='/',env={'LC_ALL':'C'},close_fds=True,input=data,capture_output=True,timeout=12)
+            good=call(b'ready')
+            require(good.returncode==0 and json.loads(good.stdout)=={'choice':'ready','checked':341},'isolated_checker_341')
+            require(call(b'unreviewed').returncode==2,'unreviewed_code_denied')
+        finally: os.close(parent_fd)
+    finally: os.close(d)
+print('STAGE_B_LOCAL_PREFLIGHT_PASS: 341/341, nonroot, private fs, nofollow, atomic commit, closed fd')
+PY
+adb shell "$run $p/bin/python -I -S -B $h/freedom-stage-b/probe.py"
+echo 'STAGE_B_PASS: disposable Android native Python preflight'
+echo 'ANDROID_CODING_GO=0 NO_REAL_PROJECTS=1 NO_KEYS=1'
