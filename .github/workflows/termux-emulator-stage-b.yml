@@ -1,4 +1,4 @@
-name: FREEDOM Android emulator — Stage B (preflight only)
+name: FREEDOM Android emulator — Stage B hardlink compatibility (preflight only)
 
 on:
   push:
