@@ -1,0 +1,33 @@
+name: FREEDOM Android emulator — Stage B (preflight only)
+
+on:
+  push:
+    paths:
+      - '.github/workflows/termux-emulator-stage-b.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  emulator-stage-b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable KVM for disposable emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Boot disposable Android and test native Python preflight
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_4
+          emulator-options: -no-window -no-audio -no-snapshot -gpu swiftshader_indirect -no-boot-anim
+          disable-animations: true
+          script: |
+            bash ci/android_stage_a.sh
+            bash ci/android_stage_b.sh
