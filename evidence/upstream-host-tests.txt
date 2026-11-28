@@ -1,0 +1,48 @@
+test_android_probe_requires_explicit_flag (test_commission_probe.PortabilityProbeTests.test_android_probe_requires_explicit_flag) ... ok
+test_checker_starts_cleanly_with_inheritable_canary (test_commission_probe.PortabilityProbeTests.test_checker_starts_cleanly_with_inheritable_canary) ... ok
+test_copied_v02_integrity (test_commission_probe.PortabilityProbeTests.test_copied_v02_integrity) ... ok
+test_fs_primitives_in_synthetic_scratch (test_commission_probe.PortabilityProbeTests.test_fs_primitives_in_synthetic_scratch) ... ok
+test_manifest_path_traversal_fails (test_commission_probe.PortabilityProbeTests.test_manifest_path_traversal_fails) ... ok
+test_missing_manifest_file_fails (test_commission_probe.PortabilityProbeTests.test_missing_manifest_file_fails) ... ok
+test_modified_manifest_file_fails (test_commission_probe.PortabilityProbeTests.test_modified_manifest_file_fails) ... ok
+test_not_a_coding_or_egress_authorization (test_commission_probe.PortabilityProbeTests.test_not_a_coding_or_egress_authorization) ... ok
+test_private_directory_permissions (test_commission_probe.PortabilityProbeTests.test_private_directory_permissions) ... ok
+test_root_guard (test_commission_probe.PortabilityProbeTests.test_root_guard) ... ok
+test_alias_refusals_and_external_canary (test_pilot.Gates.test_alias_refusals_and_external_canary) ... ok
+test_corrupt_claim_and_missing_initialized_state (test_pilot.Gates.test_corrupt_claim_and_missing_initialized_state) ... ok
+test_data_only_proposal_checked_before_edit (test_pilot.Gates.test_data_only_proposal_checked_before_edit) ... ok
+test_directory_renamed_after_stage (test_pilot.Gates.test_directory_renamed_after_stage) ... ok
+test_end_to_end_and_byte_identical_delivery (test_pilot.Gates.test_end_to_end_and_byte_identical_delivery) ... ok
+test_failed_claim_sync_blocks_all_dispatch (test_pilot.Gates.test_failed_claim_sync_blocks_all_dispatch) ... ok
+test_grant_binds_policy_edits_tests_and_snapshot (test_pilot.Gates.test_grant_binds_policy_edits_tests_and_snapshot) ... ok
+test_inert_requests_for_outside_operations (test_pilot.Gates.test_inert_requests_for_outside_operations) ... ok
+test_inherited_descriptors_env_config_and_closed_catalogue (test_pilot.Gates.test_inherited_descriptors_env_config_and_closed_catalogue) ... ok
+test_limits_and_terminal_verifier_failure (test_pilot.Gates.test_limits_and_terminal_verifier_failure) ... ok
+test_missing_declined_piped_and_duplicate_approval (test_pilot.Gates.test_missing_declined_piped_and_duplicate_approval) ... ok
+test_new_inode_same_bytes_and_directory_substitution (test_pilot.Gates.test_new_inode_same_bytes_and_directory_substitution) ... ok
+test_no_paid_or_provider_fallback (test_pilot.Gates.test_no_paid_or_provider_fallback) ... ok
+test_no_remote_execution_or_model_authority (test_pilot.Gates.test_no_remote_execution_or_model_authority) ... ok
+test_overlapping_worker_excluded (test_pilot.Gates.test_overlapping_worker_excluded) ... ok
+test_protected_file_preimage_extra_files_and_mode (test_pilot.Gates.test_protected_file_preimage_extra_files_and_mode) ... ok
+test_raw_hash_and_expiry (test_pilot.Gates.test_raw_hash_and_expiry) ... ok
+test_real_process_death_four_boundaries (test_pilot.Gates.test_real_process_death_four_boundaries) ... ok
+test_refuse_after_claim_on_last_moment_substitution (test_pilot.Gates.test_refuse_after_claim_on_last_moment_substitution) ... ok
+test_tampered_report_refused_before_network (test_pilot.Gates.test_tampered_report_refused_before_network) ... ok
+test_transport_ambiguity_conflict_and_false_success (test_pilot.Gates.test_transport_ambiguity_conflict_and_false_success) ... ok
+test_unavailable_malformed_or_substituted_proposal (test_pilot.Gates.test_unavailable_malformed_or_substituted_proposal) ... ok
+test_changed_receipt_cannot_reuse_id (test_supervised_workflow.WorkflowTests.test_changed_receipt_cannot_reuse_id) ... ok
+test_crash_after_reservation_fails_closed (test_supervised_workflow.WorkflowTests.test_crash_after_reservation_fails_closed) ... ok
+test_host_only_guard (test_supervised_workflow.WorkflowTests.test_host_only_guard) ... ok
+test_input_is_data_not_runtime_authority (test_supervised_workflow.WorkflowTests.test_input_is_data_not_runtime_authority) ... ok
+test_no_forged_receipt_creates_reservation (test_supervised_workflow.WorkflowTests.test_no_forged_receipt_creates_reservation) ... ok
+test_no_reapproval_after_decline (test_supervised_workflow.WorkflowTests.test_no_reapproval_after_decline) ... ok
+test_receipt_schema_rejects_extra_instructions (test_supervised_workflow.WorkflowTests.test_receipt_schema_rejects_extra_instructions) ... ok
+test_replay_no_checker_and_identical_seal (test_supervised_workflow.WorkflowTests.test_replay_no_checker_and_identical_seal) ... ok
+test_verified_source_and_protected_cases (test_supervised_workflow.WorkflowTests.test_verified_source_and_protected_cases) ... ok
+test_wrong_choice_is_refused_before_edit (test_supervised_workflow.WorkflowTests.test_wrong_choice_is_refused_before_edit) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 1.347s
+
+OK
+HANDOFF END TO END: 6/6 DISPOSABLE HOST ASSERTIONS PASS

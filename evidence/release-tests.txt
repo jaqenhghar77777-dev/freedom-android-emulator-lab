@@ -1,0 +1,14 @@
+test_alias_gate_missing (__main__.Release.test_alias_gate_missing) ... ok
+test_arm_requires_normal_app_domain_before_prompt (__main__.Release.test_arm_requires_normal_app_domain_before_prompt) ... ok
+test_good (__main__.Release.test_good) ... ok
+test_missing_independent_observation (__main__.Release.test_missing_independent_observation) ... ok
+test_non_emulator (__main__.Release.test_non_emulator) ... ok
+test_partial_tests (__main__.Release.test_partial_tests) ... ok
+test_prior_build (__main__.Release.test_prior_build) ... ok
+test_same_boot_does_not_count (__main__.Release.test_same_boot_does_not_count) ... ok
+test_unpinned (__main__.Release.test_unpinned) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.009s
+
+OK

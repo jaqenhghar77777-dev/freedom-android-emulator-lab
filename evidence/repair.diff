@@ -1,0 +1,6 @@
+--- before/adjust.py
++++ after/adjust.py
+@@ -1,2 +1,2 @@
+ def adjusted(x, d, cap):
+-    return x
++    return min(max((x + d), 0), cap)

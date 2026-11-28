@@ -1,0 +1,1 @@
+{"status": "BLOCKED", "reason": "independent_observer_unavailable: /usr/bin/strace: test_ptrace_get_syscall_info: PTRACE_TRACEME: Operation not permitted | /usr/bin/strace: ptrace(PTRACE_TRACEME, ...): Operation not permitted"}

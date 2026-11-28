@@ -1,0 +1,1 @@
+PASS real Linux PTY: complete scope visible, one confirmation, one durable grant, zero execution claims

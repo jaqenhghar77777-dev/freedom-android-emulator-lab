@@ -1,0 +1,51 @@
+{"baseline":{"checker_exit_code":0,"exhaustive":55,"exhaustive_total":405,"supplied":2,"supplied_total":5},"before":"def adjusted(x, d, cap):\n    return x\n","goal":"Repair synthetic adjusted(x,d,cap); currently returns x. Return x+d clipped to [0,cap]. Domain: x,d=-4..4; cap=0..4. Observed examples (x,d,cap): (2,1,5) returned 2, expected 3; (1,-4,5) returned 1, expected 0. Reply only with a JSON array (1-31 postfix tokens). Push x,d,cap,zero. Binary add,sub,min,max pop right and left in that order. End with one value. No text or tools.","protected_examples":[[2,1,5,3],[1,-4,5,0],[5,4,5,5],[0,0,0,0],[-3,4,2,1]],"report_path":"outbox/freedom-v10-c-demov001.json","scope":{"build_sha256":"3dd7aa743b575c7a39c263d1c8ee2e5fdca5538b3d8e6237262743e07f4b8323","edit":"work/adjust.py","goal_label":"Repair the synthetic bounded adjustment","grant_seconds":3600,"id":"freedom-v10-c-demov001","job":[39,4971],"maximum_edits":1,"mode":"bridge-fixture","model":"nvidia/nemotron-3.5-lightning:free","objects":{"source":[39,4973],"tests":[39,4974],"work":[39,4972]},"one_free_inference":true,"policy":"synthetic-adjust-postfix-v1","source_sha256":"8d6d701b3887914b164b6962a8ebe9be991368204808d0c379dca43e89e7684a","task_sha256":"56e7af594225bd5e46afe948c0790b2ae718738a7ea969535e67720c61de8cbc","tests_sha256":"abdbdfb014ce901c389ca47a2bca3edc27dfe013d60bb7bee5a6c343dcb3d7ee","verification_calls":3}}
+{
+  "transport": "OFFLINE controlled model and GitHub doubles",
+  "authorization": "simulated terminal confirmation",
+  "worker": "actual nonroot CPython filesystem + clean checker",
+  "machine": "x86_64",
+  "python": "3.12.14",
+  "uid": 1000,
+  "synthetic_model_posts": 1,
+  "synthetic_mailbox_creates": 1,
+  "unchanged_inode_on_replay": true,
+  "saved_and_returned_identical": true,
+  "seal_sha256": "093da141bb2a2961d5afc2cee418116054cb9ab8741a4970414e0234888a9dd5",
+  "root": "/tmp/freedom-demo-nct6p5k6",
+  "report": {
+    "report": {
+      "after": {
+        "checker_exit_code": 0,
+        "exhaustive": 405,
+        "exhaustive_total": 405,
+        "supplied": 5,
+        "supplied_total": 5
+      },
+      "after_sha256": "c301c37e37c5f00cb7050e268c44822a8fe8658f6a63a26e6c8718ab46590ae5",
+      "answer_receipt_sha256": "380596a09532bf550cc79ecd3d7c6af5e96f1678e92a13df0465c5670fb1b54e",
+      "before": {
+        "checker_exit_code": 0,
+        "exhaustive": 55,
+        "exhaustive_total": 405,
+        "supplied": 2,
+        "supplied_total": 5
+      },
+      "before_sha256": "8d6d701b3887914b164b6962a8ebe9be991368204808d0c379dca43e89e7684a",
+      "changed": [
+        "work/adjust.py"
+      ],
+      "diff": "--- before/adjust.py\n+++ after/adjust.py\n@@ -1,2 +1,2 @@\n def adjusted(x, d, cap):\n-    return x\n+    return min(max((x + d), 0), cap)\n",
+      "goal_label": "Repair the synthetic bounded adjustment",
+      "grant_sha256": "93bd0e0113c816769eb5f5443c3f7054b0f2b3e93bc71a2e67e6696771c5f24b",
+      "id": "freedom-v10-c-demov001",
+      "mode": "bridge-fixture",
+      "policy": "synthetic-adjust-postfix-v1",
+      "proposal": "[\"x\",\"d\",\"add\",\"zero\",\"max\",\"cap\",\"min\"]",
+      "protected_sha256": "abdbdfb014ce901c389ca47a2bca3edc27dfe013d60bb7bee5a6c343dcb3d7ee",
+      "reason": "committed_and_verified",
+      "status": "PASS",
+      "task_sha256": "56e7af594225bd5e46afe948c0790b2ae718738a7ea969535e67720c61de8cbc"
+    },
+    "report_sha256": "b9b952689c1e332952cecc4cb5815afd22508bb0e9f9343d429be6aa62126a93"
+  }
+}

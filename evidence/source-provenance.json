@@ -1,0 +1,35 @@
+{
+  "packages": {
+    "FREEDOM_Supervised_Workflow_v02.zip": {
+      "sha256": "6d442255c58651207df737df6573d1d083822e886bc3960aa9eca353a0a2aed8",
+      "entries": 23
+    },
+    "FREEDOM_Android_Commissioning_v03.zip": {
+      "sha256": "960a0159d8e78e339d587f0c9aa3dd212f36cf865df826866b67a8bfab452942",
+      "entries": 28
+    },
+    "FREEDOM_Emulator_StageA_v04.zip": {
+      "sha256": "6828d6158d845a9f8d570f829a4b207a663add2883fab939d0a0dd8da404fb5a",
+      "entries": 3
+    },
+    "FREEDOM_Proposal_Handoff_v01.zip": {
+      "sha256": "9a5545cbec7fc358eb0765447933c4c9517adc69e9080eb94dd6ff538f41f9d8",
+      "entries": 19
+    }
+  },
+  "lab_commit": "7bff62eefcb1d3112a5849f38ecc040f52b58d97",
+  "bridge_sha256": "73f0b8a71232edcdaefdf145e3d4c79c240e7f68c3facad50689afb07081d681",
+  "prior_model_receipt_sha256": "7a28d37bb6d1af60c3de7247e6270cfd5d4710c747f5720da82f6f81b702d7c3",
+  "prior_choice": "{\"choice\":\"ready\"}",
+  "new_model_transport": "fixture",
+  "android_runs": [
+    "45797867421",
+    "45804793203",
+    "45813133920"
+  ],
+  "inspected_isolation_history": [
+    "autopilot_v04.py",
+    "landlock_fd_alias_lab006i.py",
+    "PROPOSED_GATES_NOT_VERIFIED.md"
+  ]
+}

@@ -1,0 +1,3 @@
+PASS actual Python bytes, task, grant, response and test hashes, report seal, returned bytes and diff
+Before {'checker_exit_code': 0, 'exhaustive': 55, 'exhaustive_total': 405, 'supplied': 2, 'supplied_total': 5} after {'checker_exit_code': 0, 'exhaustive': 405, 'exhaustive_total': 405, 'supplied': 5, 'supplied_total': 5}
+SHA-256 of exact returned envelope 093da141bb2a2961d5afc2cee418116054cb9ab8741a4970414e0234888a9dd5

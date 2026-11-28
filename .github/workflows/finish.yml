@@ -1,0 +1,50 @@
+name: FREEDOM disposable synthetic commissioning
+on:
+  workflow_dispatch:
+  push:
+    branches: [freedom-finish-line-lab]
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    if: github.repository == 'jaqenhghar77777-dev/freedom-android-emulator-lab' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: |
+          sha256sum -c SHA256SUMS
+          python3 -I -S -B test_finish.py
+          python3 -I -S -B ci/observe.py
+          python3 -I -S -B ci/verify_evidence.py
+          python3 -I -S -B ci/release_checks.py
+          python3 -I -S -B ci/tty_host.py
+          python3 -I -S -B lab.py
+  emulator-stage-b:
+    if: github.repository == 'jaqenhghar77777-dev/freedom-android-emulator-lab' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: sha256sum -c SHA256SUMS
+      - name: Enable KVM for disposable emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Boot disposable Android and test native Python preflight
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_4
+          emulator-options: -no-window -no-audio -no-snapshot -gpu swiftshader_indirect -no-boot-anim
+          disable-animations: true
+          script: |
+            bash ci/commission.sh
